@@ -11,6 +11,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+//http://localhost:3000/api/users
 app.use("/api/users", usersRouter);
 
 app.use((_req, res) => {
