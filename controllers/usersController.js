@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { User } from "../models/usersModel.js";
 // prettier-ignore
-import { signupValidation } from "../validations/validation.js";
+import { signupValidation, subscriptionValidation } from "../validations/validation.js";
 import { httpError } from "../helpers/httpError.js";
 
 const { SECRET_KEY } = process.env;
@@ -91,5 +91,23 @@ const getCurrentUsers = async (req, res) => {
   });
 };
 
+const updateUserSubscription = async (req, res) => {
+  const { error } = subscriptionValidation.validate(req.body);
+  if (error) {
+    throw httpError(400, error.message);
+  }
+
+  const { _id } = req.user;
+
+  const updatedUser = await User.findByIdAndUpdate(_id, req.body, {
+    new: true,
+  });
+
+  res.json({
+    email: updatedUser.email,
+    subscription: updatedUser.subscription,
+  });
+};
+
 // prettier-ignore
-export { signupUser, loginUser, logoutUser, getCurrentUsers};
+export { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription };
