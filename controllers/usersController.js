@@ -98,7 +98,7 @@ const updateUserSubscription = async (req, res) => {
   }
 
   const { _id } = req.user;
-
+// returns updated user
   const updatedUser = await User.findByIdAndUpdate(_id, req.body, {
     new: true,
   });
